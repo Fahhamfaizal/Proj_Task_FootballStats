@@ -1,43 +1,31 @@
 import os
-from langchain_community.agent_toolkits import create_sql_agent
-from langchain_community.utilities import SQLDatabase
+from langchain_groq import ChatGroq
+from langchain.prompts import PromptTemplate
 
-db = SQLDatabase.from_uri("sqlite:///football.db")
+groq_key = os.getenv("GROQ_API_KEY")
+if not groq_key:
+    raise ValueError("Groq API key not found. Please set GROQ_API_KEY in secrets or environment.")
 
-provider = os.getenv("LLM_PROVIDER", "groq").lower()
-
-if provider == "openai":
-    from langchain_openai import ChatOpenAI
-    openai_key = os.getenv("OPENAI_API_KEY")
-    if not openai_key:
-        raise ValueError("OPENAI_API_KEY is not set. Please export it before running.")
-    llm = ChatOpenAI(
-        model="gpt-4",
-        temperature=0,
-        openai_api_key=openai_key
-    )
-elif provider == "groq":
-    from langchain_groq import ChatGroq
-    groq_key = os.getenv("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")
-    if not groq_key:
-        raise ValueError("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")
-    llm = ChatGroq(
-        model="llama-3.3-70b-versatile",
-        temperature=0,
-        groq_api_key=groq_key
-    )
-else:
-    raise ValueError("LLM_PROVIDER must be either 'openai' or 'groq'")
-
-agent_executor = create_sql_agent(
-    llm=llm,
-    db=db,
-    agent_type="openai-tools",
-    verbose=True,
+llm = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    temperature=0,
+    groq_api_key=groq_key
 )
 
-def agent_query(question: str) -> str:
-    return agent_executor.invoke({"input": question})
+prompt = PromptTemplate.from_template("""
+You are an assistant that translates natural language questions into SQL queries.
+The database has a table called `players(name, club, goals, assists)`.
+Return ONLY the SQL query.
+Question: {question}
+SQL:
+""")
 
-print(f"Using provider: {provider.upper()} (model={getattr(llm, 'model', 'unknown')})")
+def nl_to_sql(question: str) -> str:
+    response = llm.invoke(prompt.format(question=question))
+    sql = response.content.strip()
+    if sql.startswith("```"):
+        sql = sql.strip("`")
+        sql = sql.replace("sql", "", 1).strip()
+    return sql
+
 
