@@ -11,6 +11,7 @@ Summarization Node – interprets the query results and produces a concise text 
 Visualization Node – generates charts (e.g., bar, line, scatter) for better insights.
 
 Edges: connect the nodes in sequence: Input -> NL-to-SQL -> Database Query -> Summarization -> Visualization -> Output
+
 Flow: ensures user queries pass smoothly from text input to final dashboard output.
 
 SQL Agent Construction :
