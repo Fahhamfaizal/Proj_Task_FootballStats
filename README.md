@@ -1,5 +1,5 @@
 PROJECT : 
-A simple project where i created a small database and then integrated it with Groq LLM via LangChain so that it can convert natural language questions into SQL.
+A simple project where i created a small football database and then integrated it with Groq LLM via LangChain so that it can convert natural language questions into SQL.
 
 LanGraph Structure :
 We use LangGraph to define the flow of natural language queries → SQL execution → result handling.
