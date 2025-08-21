@@ -6,9 +6,25 @@ import matplotlib.pyplot as plt
 from nl_to_sql import nl_to_sql
 
 st.set_page_config(page_title="Football Data Explorer", layout="wide")
+
+# CSS to center the main content
+st.markdown(
+    """
+    <style>
+        .block-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("⚽ Football Data Explorer")
 
-st.sidebar.success("Using AI Provider: Groq (Mixtral-8x7b)")
+# ❌ Removed: st.sidebar.success("Using AI Provider: Groq (Mixtral-8x7b)")
 
 question = st.text_input("Ask me a football question in plain English:")
 
