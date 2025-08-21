@@ -1,0 +1,15 @@
+streamlit
+pandas
+matplotlib
+langchain
+langgraph
+langchain-openai
+langchain-community
+openai
+
+streamlit>=1.32
+pandas>=2.0
+matplotlib>=3.7
+langchain>=0.2
+langchain-groq>=0.1.4
+
