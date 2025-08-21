@@ -1,11 +1,18 @@
 import os
+import streamlit as st
 from langchain_groq import ChatGroq
 from langchain.prompts import PromptTemplate
 
+# Load key: first try st.secrets (Streamlit Cloud), then fallback to os.getenv (local)
+groq_key = st.secrets.get("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", os.getenv("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"))
+if not groq_key:
+    raise ValueError("Groq API key not found. Please set GROQ_API_KEY in secrets or environment.")
+
+# Initialize Groq LLM
 llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
+    model="llama-3.3-70b-versatile",  
     temperature=0,
-    groq_api_key=os.getenv("GROQ_API_KEY")
+    groq_api_key=groq_key
 )
 
 prompt = PromptTemplate.from_template("""
@@ -21,13 +28,8 @@ def nl_to_sql(question: str) -> str:
         response = llm.invoke(prompt.format(question=question))
         sql = response.content.strip()
         if sql.startswith("```"):
-            sql = sql.strip("`")
-            sql = sql.replace("sql", "", 1).strip()
+            sql = sql.strip("`").replace("sql", "", 1).strip()
         return sql + " -- [AI GENERATED]"
     except Exception as e:
         return f"SELECT name, club, goals, assists FROM players; -- [RULE] (Groq failed: {e})"
-
-if __name__ == "__main__":
-    test_q = "Show me players with goals greater than 12."
-    print("SQL:", nl_to_sql(test_q))
 
