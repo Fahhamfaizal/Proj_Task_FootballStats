@@ -18,9 +18,9 @@ if provider == "openai":
     )
 elif provider == "groq":
     from langchain_groq import ChatGroq
-    groq_key = os.getenv("GROQ_API_KEY")
+    groq_key = os.getenv("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")
     if not groq_key:
-        raise ValueError("GROQ_API_KEY is not set. Please export it before running.")
+        raise ValueError("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")
     llm = ChatGroq(
         model="llama-3.3-70b-versatile",
         temperature=0,
@@ -40,3 +40,4 @@ def agent_query(question: str) -> str:
     return agent_executor.invoke({"input": question})
 
 print(f"Using provider: {provider.upper()} (model={getattr(llm, 'model', 'unknown')})")
+
