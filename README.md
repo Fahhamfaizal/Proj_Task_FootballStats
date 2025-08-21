@@ -2,13 +2,13 @@ PROJECT :
 A simple project where i created a small football database and then integrated it with Groq LLM via LangChain so that it can convert natural language questions into SQL.
 
 LanGraph Structure :
-We use LangGraph to define the flow of natural language queries → SQL execution → result handling.
+We use LangGraph to define the flow of natural language queries -- SQL execution -- result handling.
     -Nodes:
             Input Node – accepts user’s plain English question.
             NL-to-SQL Node – converts natural language into SQL using the LLM.
             Database Query Node – executes the SQL against our SQLite database.
             Summarization Node – interprets the query results and produces a concise text
-    -Edges: connect the nodes in sequence, Input → NL-to-SQL → Database Query → Summarization → Visualization → Output
+    -Edges: connect the nodes in sequence, Input -- NL-to-SQL -- Database Query -- Summarization -- Visualization -- Output
     -Flow: ensures user queries pass smoothly from text input to final dashboard output.
 
 SQL Agent Construction :
